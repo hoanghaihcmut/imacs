@@ -1,1 +1,735 @@
 
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Current Topics in Mathematics and Industrial Applications</title>
+
+<style>
+:root{
+	/* Blue theme */
+	--brand-900:#0b3a75;
+	--brand-700:#1565c0;
+	--brand-500:#1e88e5;
+	
+	--panel:#dbeafe;      /* sidebar */
+	--shell:#eff6ff;      /* outer shell */
+	--card:#ffffff;
+	
+	--text:#0f172a;
+	--muted:#475569;
+	--border:rgba(15,23,42,.12);
+	--shadow:0 12px 28px rgba(15,23,42,.10);
+	--shadow-soft:0 8px 18px rgba(15,23,42,.08);
+	
+	--link:#1d4ed8;
+	--radius:14px;
+	--ring: 0 0 0 4px rgba(30,136,229,.20);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+html{
+	scroll-behavior: smooth;
+}
+section[id]{ scroll-margin-top: 30px; }
+
+body{
+	margin:0;
+	font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", sans-serif;
+	color:var(--text);
+	background:#fff;
+}
+
+/* Centered shell */
+.imacs-shell{
+	max-width: 1040px;
+	margin: 22px auto;
+	background: var(--shell);
+	border:1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+}
+
+/* Header */
+.imacs-header{
+	background: linear-gradient(90deg, var(--brand-900), var(--brand-700));
+	color:#fff;
+	padding: 18px 22px;
+	position: relative;
+	border-radius: var(--radius) var(--radius) 0 0;
+}
+.imacs-header::after{
+	content:"";
+	position:absolute;
+	inset:auto 0 0 0;
+	height:1px;
+	background: rgba(255,255,255,.18);
+}
+.imacs-header-inner{
+	display:flex;
+	gap:18px;
+	align-items:center;
+	justify-content:space-between;
+}
+.imacs-header-left{
+	display:flex;
+	gap:16px;
+	align-items:center;
+	min-width: 280px;
+}
+
+.imacs-mark{
+	width: 160px;
+	height: 74px;
+	border-radius: 12px;
+	background: rgba(255,255,255,.10);
+	border: 1px solid rgba(255,255,255,.18);
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	overflow:hidden;
+	box-shadow: 0 10px 18px rgba(0,0,0,.10) inset;
+	transition: transform .18s ease, background .18s ease;
+}
+.imacs-mark:hover{ transform: translateY(-1px); background: rgba(255,255,255,.14); }
+
+.imacs-mark img{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.imacs-header-text{ flex:1; min-width: 360px; }
+.imacs-kicker{
+	font-size: 13px;
+	letter-spacing:.2px;
+	opacity:.92;
+	margin:0 0 6px 0;
+}
+.imacs-title{
+	margin:0;
+	font-size: 22px;
+	line-height:1.25;
+	font-weight: 780;
+}
+.imacs-subtitle{
+	margin:6px 0 0 0;
+	font-size: 13px;
+	opacity:.92;
+}
+
+.imacs-hero-meta{
+	margin-top: 10px;
+	display:flex;
+	flex-wrap:wrap;
+	gap:10px 14px;
+	font-size: 13px;
+	opacity:.98;
+}
+.imacs-pill{
+	display:inline-flex;
+	align-items:center;
+	gap:8px;
+	padding:7px 11px;
+	border-radius:999px;
+	background: rgba(255,255,255,.12);
+	border: 1px solid rgba(255,255,255,.18);
+	white-space: nowrap;
+	transition: transform .15s ease, background .15s ease;
+}
+.imacs-pill:hover{ transform: translateY(-1px); background: rgba(255,255,255,.16); }
+.imacs-pill svg{ width:16px; height:16px; opacity:.95; }
+
+/* Layout */
+.imacs-main{
+	display:grid;
+	grid-template-columns: 250px 1fr;
+	min-height: 560px;
+}
+
+/* Sidebar */
+.imacs-sidebar{
+	background: var(--panel);
+	padding: 14px 14px 18px 14px;
+	border-right: 1px solid rgba(0,0,0,.06);
+	border-radius: 0 0 0 var(--radius);
+	position: sticky;
+	top: 20px;
+	align-self: start;
+	max-height: calc(100vh - 40px);
+	overflow-y: auto;
+}
+.imacs-sidebar h3{
+	margin: 8px 6px 10px 6px;
+	font-size: 12.5px;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: .7px;
+	color: rgba(15,23,42,.70);
+}
+
+.imacs-nav{
+	list-style:none;
+	padding:0;
+	margin: 6px 0 14px 0;
+	display:flex;
+	flex-direction:column;
+	gap:6px;
+}
+
+.imacs-nav a{
+	display:block;
+	padding: 10px 12px;
+	border-radius: 12px;
+	text-decoration:none;
+	color: rgba(15,23,42,.90);
+	font-size: 14px;
+	line-height:1.2;
+	background: rgba(255,255,255,.18);
+	border: 1px solid rgba(255,255,255,.22);
+	transition: transform .14s ease, box-shadow .14s ease, background .14s ease, border-color .14s ease;
+}
+
+.imacs-nav a:hover{
+	transform: translateY(-1px);
+	background: rgba(255,255,255,.35);
+	border-color: rgba(21,101,192,.25);
+	box-shadow: var(--shadow-soft);
+}
+
+.imacs-nav a:focus-visible{
+	outline: none;
+	box-shadow: var(--ring), var(--shadow-soft);
+	border-color: rgba(30,136,229,.45);
+}
+
+.imacs-nav a.is-active,
+.imacs-nav a[aria-current="page"]{
+	background: rgba(255,255,255,.62);
+	border-color: rgba(21,101,192,.35);
+	font-weight: 780;
+	box-shadow: inset 4px 0 0 rgba(30,136,229,.85), var(--shadow-soft);
+}
+
+/* Content */
+.imacs-content{
+	padding: 18px 18px 22px 18px;
+	background: #fff;
+	border-radius: 0 0 var(--radius) 0;
+}
+
+.imacs-section{
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	padding: 14px 16px;
+	margin-bottom: 14px;
+	box-shadow: 0 1px 0 rgba(15,23,42,.04);
+	transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+.imacs-section:hover{
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-soft);
+	border-color: rgba(21,101,192,.20);
+}
+.imacs-section:focus-within{
+	box-shadow: var(--ring), var(--shadow-soft);
+	border-color: rgba(30,136,229,.35);
+}
+
+.imacs-section h2{
+	margin: 0 0 10px 0;
+	font-size: 18px;
+	letter-spacing:.1px;
+	padding-left: 10px;
+	border-left: 4px solid rgba(30,136,229,.85);
+}
+
+.imacs-section p{
+	margin: 8px 0;
+	line-height: 1.6;
+}
+.imacs-muted{ color: var(--muted); }
+
+.imacs-bullets{
+	margin: 0;
+	padding-left: 18px;
+}
+.imacs-bullets li{
+	margin: 7px 0;
+	line-height: 1.5;
+}
+
+.imacs-two-cols{
+	display:grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 6px 24px;
+}
+
+/* KV rows */
+.imacs-kv{ margin-top: 6px; }
+.imacs-kv-row{
+	display: grid;
+	grid-template-columns: 190px 1fr;
+	column-gap: 16px;
+	align-items: start;
+	padding: 6px 0;
+	border-bottom: 1px dashed rgba(15,23,42,.05);
+}
+.imacs-kv-row:last-child {
+	border-bottom: none;
+}
+.imacs-kv-key{
+	font-weight: 700;
+	color: var(--text);
+}
+.imacs-kv-key-normal{
+	font-weight: 400;
+	font-style: normal;
+	color: var(--text);
+}
+.imacs-kv-val{
+	color: var(--text);
+	line-height: 1.5;
+}
+.imacs-kv-val-italic {
+	color: var(--text);
+	line-height: 1.5;
+	font-style: italic;
+}
+
+.imacs-talk {
+	margin: 0;
+}
+.imacs-talk-title {
+	display: list-item;
+	color: var(--text);
+	line-height: 1.5;
+	font-style: italic;
+	cursor: pointer;
+}
+.imacs-talk-title:hover {
+	color: var(--link);
+	text-decoration: underline;
+}
+.imacs-talk-title:focus-visible {
+	outline: none;
+	border-radius: 4px;
+	box-shadow: var(--ring);
+}
+.imacs-talk-title::marker {
+	color: var(--brand-700);
+}
+.imacs-talk-abstract {
+	margin-top: 8px;
+	color: var(--muted);
+	line-height: 1.6;
+	font-style: normal;
+}
+.imacs-talk-abstract p {
+	margin: 7px 0 0 0;
+}
+
+.imacs-details {
+	margin: 10px 0 0 0;
+}
+.imacs-details-title {
+	display: list-item;
+	font-weight: 400;
+	color: var(--link);
+	cursor: pointer;
+}
+.imacs-details-title:hover {
+	color: var(--link);
+	text-decoration: underline;
+}
+.imacs-details-title:focus-visible {
+	outline: none;
+	border-radius: 4px;
+	box-shadow: var(--ring);
+}
+.imacs-details-title::marker {
+	color: var(--brand-700);
+}
+.imacs-deadline {
+	color: #dc2626;
+}
+
+.imacs-secretary{
+	margin-top: 10px;
+	color: var(--muted);
+}
+
+a{ color: var(--link); }
+a:hover{ text-decoration: underline; }
+
+#contact a {
+	text-decoration: none !important;
+}
+#contact a:hover {
+	text-decoration: none !important;
+}
+
+/* Responsive */
+@media (max-width: 900px){
+	.imacs-main{ grid-template-columns: 1fr; }
+	.imacs-sidebar{ 
+		border-right: none; 
+		border-bottom: 1px solid rgba(0,0,0,.06); 
+		border-radius: 0;
+		position: static;
+		max-height: none;
+	}
+	.imacs-content{ border-radius: 0 0 var(--radius) var(--radius); }
+	.imacs-header-inner{ flex-direction: column; align-items:flex-start; }
+	.imacs-header-left{ width:100%; min-width:auto; }
+	.imacs-header-text{ min-width:auto; width:100%; }
+	.imacs-two-cols{ grid-template-columns: 1fr; }
+	.imacs-kv-row{ grid-template-columns: 1fr; row-gap: 4px; }
+}
+</style>
+</head>
+
+<body>
+<div class="imacs-shell">
+<header class="imacs-header">
+<div class="imacs-header-inner">
+<div class="imacs-header-left">
+
+<div class="imacs-mark" aria-label="Workshop logo">
+<img 
+src="https://lh3.googleusercontent.com/d/1_ux4Ic8wlf9a3WSbAEpo5H2UDzmth-qW"
+alt="IMACS 2026 Workshop Logo"
+/>
+</div>
+
+<div class="imacs-header-text">
+<p class="imacs-kicker">Scientific Workshop</p>
+<h1 class="imacs-title">Current Topics in Mathematics and Industrial Applications</h1>
+
+<div class="imacs-hero-meta">
+<span class="imacs-pill">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+<path d="M7 3v3M17 3v3M4 8h16M6 6h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="1.6"/>
+</svg>
+13–14 Aug 2026
+</span>
+
+<span class="imacs-pill">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+<path d="M12 21s7-5.2 7-12a7 7 0 1 0-14 0c0 6.8 7 12 7 12z" stroke="currentColor" stroke-width="1.6"/>
+<path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" stroke="currentColor" stroke-width="1.6"/>
+</svg>
+Auditorium B4 (Campus 1), Ho Chi Minh City University of Technology – VNU-HCM
+</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+
+<div class="imacs-main">
+<aside class="imacs-sidebar" aria-label="Workshop menu">
+<h3>Contents</h3>
+<ul class="imacs-nav">
+<li><a href="#general-info">General Information</a></li>
+<li><a href="#topics">List of Topics</a></li>
+<li><a href="#co-organizers">Co-organizers</a></li>
+<li><a href="#organizing-committee">Organizing Committee</a></li>
+<li><a href="#sponsors">Sponsors</a></li>
+<li><a href="#invited-talks">Invited Talks</a></li>
+<li><a href="#exhibition">Technology Exhibition</a></li>
+<li><a href="#registration">Registration</a></li>
+<li><a href="#participants">Participants</a></li>
+<li><a href="#program">Program</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</aside>
+
+<main class="imacs-content">
+<section class="imacs-section" id="general-info">
+<h2>General Information</h2>
+
+<div class="imacs-kv">
+<div class="imacs-kv-row">
+<div class="imacs-kv-key">Title:</div>
+<div class="imacs-kv-val">Current Topics in Mathematics and Industrial Applications (CTMIA)</div>
+</div>
+
+<div class="imacs-kv-row">
+<div class="imacs-kv-key">Date:</div>
+<div class="imacs-kv-val">13–14 August 2026</div>
+</div>
+
+<div class="imacs-kv-row">
+<div class="imacs-kv-key">Address:</div>
+<div class="imacs-kv-val">
+Auditorium B4, Ho Chi Minh City University of Technology, VNU-HCM<br>
+268 Ly Thuong Kiet Street, Dien Hong Ward, Ho Chi Minh City
+</div>
+</div>
+</div>
+
+<p class="imacs-muted" style="margin-top:10px;">Additional activity: Celebration of the 5th anniversary of the Institute of Mathematical and Computational Sciences (IMACS).</p>
+</section>
+
+<section class="imacs-section" id="topics">
+<h2>List of Topics</h2>
+<ul class="imacs-bullets">
+<li>Control, simulation, and optimization of industrial applications</li>
+<li>Machine learning, deep learning, and applications</li>
+<li>Computational geometry and applications</li>
+<li>Numerical methods and optimization – theory and applications</li>
+<li>Differential equations and applications</li>
+<li>Quantum computing and applications</li>
+<li>New mathematical theories arising from solving industrial problems</li>
+<li>Core technology products based on mathematical platforms</li>
+<li>...</li>
+<li>Other topics related to Mathematics and Industry</li>
+</ul>
+</section>
+
+<section class="imacs-section" id="co-organizers">
+<h2>Co-organizers</h2>
+<ul class="imacs-bullets">
+<li>Institute of Mathematical and Computational Sciences, Ho Chi Minh City University of Technology, VNU-HCM</li>
+<li>Faculty of Applied Science, Ho Chi Minh City University of Technology, VNU-HCM</li>
+<li>Faculty of Computer Science and Engineering, Ho Chi Minh City University of Technology, VNU-HCM</li>
+</ul>
+</section>
+
+<section class="imacs-section" id="organizing-committee">
+<h2>Organizing Committee</h2>
+
+<div class="imacs-two-cols">
+<ul class="imacs-bullets">
+<li>Phan Thanh An (<i>Chair</i>)</li>
+<li>Nguyen Tien Dung</li>
+<li>Le Xuan Dai</li>
+<li>Nguyen Dinh</li>
+</ul>
+
+<ul class="imacs-bullets">
+<li>Ngo Khanh Hieu</li>
+<li>Tran Van Hoai</li>
+<li>Le Hong Trang</li>
+<li>Bui Duc Vinh</li>
+</ul>
+</div>
+
+<p class="imacs-secretary">Workshop Secretary: Dang Thi My Nhan</p>
+</section>
+
+<section class="imacs-section" id="sponsors">
+<h2>Sponsors</h2>
+<ul class="imacs-bullets">
+<li>National-level science and technology research project under the National Key Program for the Development of Mathematics for the 2021–2030 period: Development of fundamental algorithms for optimal pathfinding in 2.5D (terrain) and 3D spaces, code: ĐTĐLCN.05/25</li>
+<li>Ministry-level science and technology project – Ministry of Natural Resources and Environment: Research on the application of artificial intelligence and multi-source big data analysis in forecasting and warning of thunderstorms, lightning, and hail, code: TNMT.2024.06.06</li>
+<li>Vietnam Center of Robotics Excellence Joint Stock Company (VNX Robotics Co.)</li>
+</ul>
+</section>
+
+<section class="imacs-section" id="invited-talks">
+<h2>Invited Talks</h2>
+<div class="imacs-kv">
+<div class="imacs-kv-row">
+<div class="imacs-kv-key-normal">Dinh Nho Hao</div>
+<div class="imacs-kv-val">
+<details class="imacs-talk">
+<summary class="imacs-talk-title">Some Inverse Problems in Diffusion Processes</summary>
+<div class="imacs-talk-abstract">
+<p>We present several inverse problems for diffusion processes, including the identification of boundary conditions, sources, and coefficients. These problems are well known to be ill-posed. We establish stability results for them and study regularization methods such as Tikhonov regularization and mollification techniques. Numerical results are also presented to illustrate the effectiveness of these methods.</p>
+</div>
+</details>
+</div>
+</div>
+<div class="imacs-kv-row">
+<div class="imacs-kv-key-normal">Truong Vinh Lan</div>
+<div class="imacs-kv-val">
+<details class="imacs-talk">
+<summary class="imacs-talk-title">From Markov Data to Transformers: New Generalization Theory for Modern Deep Learning</summary>
+<div class="imacs-talk-abstract">
+<p>Why do highly over-parameterized deep neural networks and Large Language Models (LLMs) generalize so effectively? This question remains one of the central challenges in modern machine learning. In this talk, I present recent theoretical advances that provide new insights into the generalization behavior of modern deep learning systems.</p>
+<p>The talk is organized around three themes. First, I discuss learning from dependent data and present generalization bounds for deep neural networks trained on Markovian datasets, revealing how temporal dependence and mixing properties affect learning performance. Second, I introduce new complexity bounds for convolutional neural networks that lead to non-vacuous generalization guarantees and, in some settings, eliminate the dependence on network depth. Finally, I present new rank-dependent generalization bounds for Transformer architectures, showing that low-rank structures can yield sharper guarantees than existing sequence-length-based analyses.</p>
+<p>Together, these results provide a unified mathematical perspective on how data dependence, architectural structure, and matrix geometry contribute to the remarkable generalization capabilities of modern deep learning and large language models.</p>
+</div>
+</details>
+</div>
+</div>
+<div class="imacs-kv-row">
+<div class="imacs-kv-key-normal">Toshiharu Sato</div>
+<div class="imacs-kv-val">
+<details class="imacs-talk">
+<summary class="imacs-talk-title">Physical AI. How It Works for Actual Life/Works</summary>
+<div class="imacs-talk-abstract">
+<p>Physical AI is transforming machines from systems that merely “move” into systems that can truly “work” in the real world. This lecture explores how contact control, sensorless intelligence, and autonomous robotics will reshape infrastructure, logistics, agriculture, and daily life, creating the next generation of human–machine collaboration.</p>
+</div>
+</details>
+</div>
+</div>
+</div>
+</section>
+
+<section class="imacs-section" id="exhibition">
+<h2>Exhibition of Core Technology Products based on Mathematics</h2>
+<div class="imacs-kv">
+<div class="imacs-kv-row">
+<div class="imacs-kv-key-normal">Unmanned Ground Vehicle (UGV)</div>
+<div class="imacs-kv-val-italic">Autonomous navigation and pathfinding in GPS-denied environments</div>
+</div>
+<div class="imacs-kv-row">
+<div class="imacs-kv-key-normal">Unmanned Aerial Vehicle (UAV) positioning</div>
+<div class="imacs-kv-val-italic">UAV self-positioning using AI and geometry-based algorithms, without GPS</div>
+</div>
+<div class="imacs-kv-row">
+<div class="imacs-kv-key-normal">Crack width measurement device</div>
+<div class="imacs-kv-val-italic">Measuring crack width on hard surfaces based on a new mathematical concept of the width of compact sets</div>
+</div>
+<div class="imacs-kv-row">
+<div class="imacs-kv-key-normal">AI model for thunderstorm and lightning forecasting</div>
+<div class="imacs-kv-val-italic">Real-time forecasting based on multi-source data (radar, satellite)</div>
+</div>
+</div>
+</section>
+
+<section class="imacs-section" id="registration">
+<h2>Registration</h2>
+<p>
+Please complete your registration information here:
+<a href="https://forms.gle/vKxmmPkDMBsHMNjB7" target="_blank" rel="noopener">
+https://forms.gle/vKxmmPkDMBsHMNjB7
+</a>
+</p>
+<p>The final deadline for participation registration, submission of report abstracts, and technology product exhibitions is <span class="imacs-deadline">22/07/2026</span>.
+    There is no registration fee for the workshop. Participants are requested to self-fund their living expenses such as travel, accommodation, and meals.
+</p>
+
+<details class="imacs-details">
+<summary class="imacs-details-title">Notes on Registration Validity</summary>
+<ol class="imacs-bullets">
+<li>After clicking the SUBMIT button at the end of the registration form, an email with the subject "Các chủ đề thời sự của Toán học và ứng dụng trong công nghiệp (Tp. Hồ Chí Minh, 13-14/08/2026)" will be automatically sent from <a href="mailto:forms-receipts-noreply@google.com">forms-receipts-noreply@google.com</a> to your registered email address.</li>
+<li>Please forward the above email to the workshop's email address (<a href="mailto:imacs@hcmut.edu.vn">imacs@hcmut.edu.vn</a>). After receiving your forwarded email, the Organizing Committee will send a reply email to confirm your registration. Your registration is valid only after you receive this confirmation email from the Organizing Committee.</li>
+<li>You can change your registered information by re-accessing the auto-reply email from the system and submitting the form again.</li>
+<li>Please register only for yourself and refrain from editing other people's registrations.</li>
+</ol>
+</details>
+
+<details class="imacs-details">
+<summary class="imacs-details-title">Guidelines for Report and Product Abstracts</summary>
+<ul class="imacs-bullets">
+<li>Must be in LaTeX format using the templates:
+<a href="https://drive.google.com/drive/folders/1mFYWC4Gg2oqqcFUG6mV6wf4h4M9LnJ5b?usp=sharing" target="_blank" rel="noopener">report abstract</a>;
+<a href="https://drive.google.com/drive/folders/1FCsvGFxSiHK7yVps_CT9oLwCuIZXhaBr?usp=sharing" target="_blank" rel="noopener">technology product exhibition info</a>.
+</li>
+<li>Written in Vietnamese (*-v.tex) or English (*-e.tex).</li>
+<li>Maximum 1 A4 page.</li>
+<li>Must not contain images, graphs, or tables/forms.</li>
+<li>Please submit both the .tex file and the corresponding .pdf file.</li>
+</ul>
+</details>
+</section>
+
+<section class="imacs-section" id="participants">
+<h2>Participants</h2>
+<p class="imacs-muted">TBA</p>
+</section>
+
+<section class="imacs-section" id="program">
+<h2>Program</h2>
+<p class="imacs-muted">TBA</p>
+</section>
+
+<section class="imacs-section" id="contact">
+<h2>Contact</h2>
+
+<div class="imacs-kv">
+<div class="imacs-kv-row">
+<div class="imacs-kv-key">Email:</div>
+<div class="imacs-kv-val">
+<a href="mailto:imacs@hcmut.edu.vn">imacs@hcmut.edu.vn</a>
+</div>
+</div>
+
+<div class="imacs-kv-row">
+<div class="imacs-kv-key">Phone:</div>
+<div class="imacs-kv-val">
+<a href="tel:+84934996231">0934 996 231</a>
+</div>
+</div>
+
+<div class="imacs-kv-row">
+<div class="imacs-kv-key">Website:</div>
+<div class="imacs-kv-val">
+<a href="https://imacs.hcmut.edu.vn/ctmia26" target="_blank" rel="noopener">
+https://imacs.hcmut.edu.vn/ctmia26
+</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+
+<script>
+(function () {
+	const navLinks = document.querySelectorAll('.imacs-nav a[href^="#"]');
+	const sections = [];
+	
+	navLinks.forEach(a => {
+		const id = a.getAttribute('href').substring(1);
+		const section = document.getElementById(id);
+		if (section) sections.push(section);
+	});
+	
+	function setActive(id) {
+		navLinks.forEach(a => {
+			if (a.getAttribute('href') === '#' + id) {
+				a.classList.add('is-active');
+			} else {
+				a.classList.remove('is-active');
+			}
+		});
+	}
+	
+	navLinks.forEach(a => {
+		a.addEventListener('click', function(e) {
+			e.preventDefault();
+			const id = this.getAttribute('href').substring(1);
+			const target = document.getElementById(id);
+			if (target) {
+				target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				setActive(id);
+				history.replaceState(null, '', '#' + id);
+			}
+		});
+	});
+	
+	const observerOptions = {
+		root: null,
+		rootMargin: '-10% 0px -85% 0px',
+		threshold: 0
+	};
+	
+	const observer = new IntersectionObserver(function(entries) {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				setActive(entry.target.id);
+			}
+		});
+	}, observerOptions);
+	
+	sections.forEach(section => {
+		observer.observe(section);
+	});
+	
+	if (sections.length > 0) {
+		setActive(sections[0].id);
+	}
+})();
+</script>
+</body>
+</html>
