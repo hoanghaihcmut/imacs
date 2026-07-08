@@ -254,6 +254,74 @@ body{
 	line-height: 1.6;
 }
 .imacs-muted{ color: var(--muted); }
+.imacs-radar-trigger{
+	padding: 0;
+	border: 0;
+	background: none;
+	font: inherit;
+	color: var(--link);
+	cursor: pointer;
+	text-align: left;
+}
+.imacs-radar-trigger:hover{
+	text-decoration: underline;
+}
+.imacs-radar-trigger:focus-visible{
+	outline: none;
+	border-radius: 4px;
+	box-shadow: var(--ring);
+}
+.imacs-image-modal{
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 16px;
+}
+.imacs-image-modal[hidden]{
+	display: none;
+}
+.imacs-image-modal-backdrop{
+	position: absolute;
+	inset: 0;
+	background: rgba(2, 6, 23, .7);
+}
+.imacs-image-modal-content{
+	position: relative;
+	z-index: 1;
+	max-width: min(96vw, 900px);
+	max-height: 90vh;
+	background: #fff;
+	border-radius: 12px;
+	padding: 12px;
+	box-shadow: 0 20px 50px rgba(2, 6, 23, .3);
+}
+.imacs-image-modal-content img{
+	display: block;
+	max-width: 100%;
+	max-height: calc(90vh - 24px);
+	border-radius: 8px;
+}
+.imacs-image-modal-close{
+	position: absolute;
+	top: -10px;
+	right: -10px;
+	width: 32px;
+	height: 32px;
+	border: 0;
+	border-radius: 999px;
+	background: #0f172a;
+	color: #fff;
+	cursor: pointer;
+	font-size: 20px;
+	line-height: 1;
+}
+.imacs-image-modal-close:focus-visible{
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(30,136,229,.35);
+}
 
 .imacs-bullets{
 	margin: 0;
@@ -480,8 +548,15 @@ Số 268 Lý Thường Kiệt, P. Diên Hồng, TP. Hồ Chí Minh
 <p class="imacs-muted" style="margin-top:10px;">
   Hoạt động khác: 
   <br>- Kỷ niệm 5 năm thành lập Viện Toán học và các Khoa học Tính toán (IMACS).
-  <br>- Tham quan Trạm radar thời tiết Nhà Bè, Số 249 Nguyễn Văn Tạo, xã Hiệp Phước, TP.HCM (từ 14:30 - 16:30 ngày 13/08/2026).
+  <br>- <button type="button" class="imacs-radar-trigger" id="nha-be-radar-trigger">Tham quan Trạm radar thời tiết Nhà Bè, Số 249 Nguyễn Văn Tạo, xã Hiệp Phước, TP.HCM (từ 14:30 - 16:30 ngày 13/08/2026).</button>
 </p>
+<div class="imacs-image-modal" id="nha-be-radar-modal" hidden>
+	<div class="imacs-image-modal-backdrop" data-close-radar-modal></div>
+	<div class="imacs-image-modal-content" role="dialog" aria-modal="true" aria-label="Ảnh Trạm radar thời tiết Nhà Bè">
+		<button type="button" class="imacs-image-modal-close" data-close-radar-modal aria-label="Đóng ảnh">&times;</button>
+		<img src="IMG_20260708_173807.jpg" alt="Trạm radar thời tiết Nhà Bè">
+	</div>
+</div>
 </section>
 
 <section class="imacs-section" id="danh-sach-chu-de">
@@ -732,6 +807,33 @@ https://imacs.hcmut.edu.vn/ctmia26
 	
 	if (sections.length > 0) {
 		setActive(sections[0].id);
+	}
+
+	const radarTrigger = document.getElementById('nha-be-radar-trigger');
+	const radarModal = document.getElementById('nha-be-radar-modal');
+	const radarCloseTargets = document.querySelectorAll('[data-close-radar-modal]');
+	
+	function closeRadarModal() {
+		if (!radarModal) return;
+		radarModal.hidden = true;
+		document.body.style.overflow = '';
+	}
+	
+	if (radarTrigger && radarModal) {
+		radarTrigger.addEventListener('click', function () {
+			radarModal.hidden = false;
+			document.body.style.overflow = 'hidden';
+		});
+		
+		radarCloseTargets.forEach(el => {
+			el.addEventListener('click', closeRadarModal);
+		});
+		
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape' && !radarModal.hidden) {
+				closeRadarModal();
+			}
+		});
 	}
 })();
 </script>
