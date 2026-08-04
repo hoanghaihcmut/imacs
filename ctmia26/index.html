@@ -650,10 +650,1002 @@ https://forms.gle/vKxmmPkDMBsHMNjB7
 <p class="imacs-muted">TBA</p>
 </section>
 
+
 <section class="imacs-section" id="chuong-trinh">
 <h2>Chương trình</h2>
-<p class="imacs-muted">TBA</p>
+
+<style>
+/* Chỉ áp dụng cho phần Chương trình */
+#chuong-trinh .ctmia-program{
+  --ct-primary:var(--brand-700);
+  --ct-primary-dark:var(--brand-900);
+  --ct-primary-light:var(--brand-500);
+  --ct-panel:var(--panel);
+  --ct-shell:var(--shell);
+  --ct-card:var(--card);
+  --ct-text:var(--text);
+  --ct-muted:var(--muted);
+  --ct-soft:#334155;
+  --ct-border:var(--border);
+  color:var(--ct-soft);
+  margin-top:12px;
+}
+
+/* Bộ chọn buổi */
+#chuong-trinh .ctmia-toolbar{
+  display:flex; flex-direction:column; gap:10px; align-items:stretch;
+  margin:0 0 16px; padding:12px; border:1px solid var(--ct-border);
+  background:var(--ct-shell); border-radius:12px;
+}
+#chuong-trinh .ctmia-session-tabs{display:flex;gap:7px;flex-wrap:wrap}
+#chuong-trinh .ctmia-session-btn{
+  appearance:none; border:1px solid rgba(21,101,192,.22); background:#fff;
+  color:var(--brand-900); padding:8px 12px; border-radius:10px;
+  font:inherit; font-size:13px; font-weight:650; cursor:pointer;
+  transition:background .15s ease,color .15s ease,border-color .15s ease,box-shadow .15s ease,transform .15s ease;
+}
+#chuong-trinh .ctmia-session-btn:hover{
+  background:var(--ct-panel); border-color:rgba(21,101,192,.34); transform:translateY(-1px);
+}
+#chuong-trinh .ctmia-session-btn:focus-visible{outline:none;box-shadow:var(--ring)}
+#chuong-trinh .ctmia-session-btn.is-active,
+#chuong-trinh .ctmia-session-btn[aria-pressed="true"]{
+  color:#fff; background:var(--brand-700); border-color:var(--brand-700);
+  box-shadow:0 4px 10px rgba(21,101,192,.16);
+}
+#chuong-trinh .ctmia-search{display:flex;align-items:center;width:100%}
+#chuong-trinh .ctmia-search input{
+  width:100%; border:1px solid var(--ct-border); border-radius:10px;
+  padding:9px 11px; font:inherit; background:#fff; color:var(--ct-soft);
+}
+#chuong-trinh .ctmia-search input::placeholder{color:#94a3b8}
+#chuong-trinh .ctmia-search input:focus{
+  outline:none; border-color:rgba(30,136,229,.48); box-shadow:var(--ring);
+}
+
+/* Ngày / buổi: giảm độ đậm và độ tối so với bản trước */
+#chuong-trinh .ctmia-day{scroll-margin-top:30px;margin-bottom:22px}
+#chuong-trinh .ctmia-day-title{
+  display:flex; justify-content:space-between; gap:16px; align-items:end;
+  border-bottom:2px solid var(--brand-500); padding-bottom:8px; margin-bottom:13px;
+}
+#chuong-trinh .ctmia-day-title h3{
+  margin:0; color:var(--brand-700); font-size:1.16rem; font-weight:700;
+}
+#chuong-trinh .ctmia-day-title p{
+  margin:0; color:var(--ct-muted); font-size:.86rem; font-weight:500;
+}
+#chuong-trinh .ctmia-session-group{margin-bottom:18px}
+#chuong-trinh .ctmia-session{
+  background:var(--ct-card); border:1px solid var(--ct-border);
+  border-radius:13px; padding:14px; margin:11px 0;
+  box-shadow:0 3px 10px rgba(15,23,42,.045);
+}
+#chuong-trinh .ctmia-session-title{
+  display:flex; gap:12px; justify-content:space-between; align-items:start; margin-bottom:11px;
+}
+#chuong-trinh .ctmia-session-title h3{
+  margin:0; font-size:1.01rem; color:var(--ct-soft); font-weight:700;
+}
+#chuong-trinh .ctmia-session-title p{
+  margin:3px 0 0; color:var(--ct-muted); font-size:.87rem; font-weight:400;
+}
+#chuong-trinh .ctmia-session-chip{
+  white-space:nowrap; border-radius:999px; background:var(--ct-panel);
+  color:var(--brand-700); border:1px solid rgba(21,101,192,.14);
+  padding:5px 9px; font-size:.74rem; font-weight:650;
+}
+#chuong-trinh .ctmia-note{
+  border-left:3px solid var(--brand-500); background:var(--ct-shell);
+  padding:10px 12px; border-radius:8px; margin:9px 0 12px;
+  color:var(--ct-muted); font-weight:400;
+}
+
+/* Sự kiện chung */
+#chuong-trinh .ctmia-simple-event{
+  display:grid; grid-template-columns:118px 1fr; gap:12px; padding:11px 2px;
+  border-top:1px solid var(--ct-border);
+}
+#chuong-trinh .ctmia-simple-event:first-of-type{border-top:0}
+#chuong-trinh .ctmia-simple-event .ctmia-time{
+  font-weight:650; color:var(--brand-700);
+}
+#chuong-trinh .ctmia-simple-event h4{
+  margin:0 0 2px; font-size:.94rem; font-weight:650; color:var(--ct-soft);
+}
+#chuong-trinh .ctmia-simple-event p{
+  margin:0; color:var(--ct-muted); font-size:.85rem;
+}
+#chuong-trinh .ctmia-break-event{
+  background:var(--ct-shell); border-radius:9px; padding-left:10px; padding-right:10px;
+}
+
+/* Bảng song song: mỗi khung giờ là một hàng chung cho hai phòng */
+#chuong-trinh .ctmia-parallel-table{
+  border:1px solid var(--ct-border); border-radius:12px; overflow:hidden; background:#fff;
+}
+#chuong-trinh .ctmia-parallel-header,
+#chuong-trinh .ctmia-parallel-row{
+  display:grid;
+  grid-template-columns:112px minmax(0,1fr) minmax(0,1fr);
+}
+#chuong-trinh .ctmia-parallel-header{
+  background:var(--ct-panel);
+  border-bottom:1px solid var(--ct-border);
+}
+#chuong-trinh .ctmia-parallel-header > div{
+  padding:10px 12px; color:var(--brand-700); font-size:.84rem; font-weight:700;
+}
+#chuong-trinh .ctmia-parallel-header > div + div{
+  border-left:1px solid var(--ct-border);
+}
+#chuong-trinh .ctmia-parallel-row{
+  border-bottom:1px solid var(--ct-border);
+  align-items:stretch;
+}
+#chuong-trinh .ctmia-parallel-row:last-child{border-bottom:0}
+#chuong-trinh .ctmia-parallel-time{
+  padding:13px 10px;
+  color:var(--ct-muted);
+  font-size:.82rem;
+  font-weight:650;
+  font-variant-numeric:tabular-nums;
+  background:#fbfdff;
+}
+#chuong-trinh .ctmia-parallel-cell{
+  min-width:0; border-left:1px solid var(--ct-border);
+  padding:0 12px;
+}
+#chuong-trinh .ctmia-parallel-cell .ctmia-report-card{
+  height:100%; padding:12px 0;
+}
+#chuong-trinh .ctmia-parallel-break .ctmia-parallel-time{
+  background:var(--ct-shell); color:var(--brand-700);
+}
+#chuong-trinh .ctmia-parallel-break-content{
+  grid-column:2 / 4;
+  border-left:1px solid var(--ct-border);
+  padding:10px 12px; background:var(--ct-shell); color:var(--ct-muted);
+  display:flex; gap:8px; align-items:center;
+}
+#chuong-trinh .ctmia-parallel-break-content strong{
+  color:var(--ct-soft); font-weight:650;
+}
+#chuong-trinh .ctmia-parallel-break-content span{font-size:.83rem}
+
+/* Báo cáo */
+#chuong-trinh .ctmia-report-card{border:0}
+#chuong-trinh .ctmia-report-main h4,
+#chuong-trinh .ctmia-plenary-body h3{
+  margin:6px 0 4px; line-height:1.38;
+  color:var(--ct-soft); font-weight:600;
+}
+#chuong-trinh .ctmia-report-main h4{font-size:.92rem}
+#chuong-trinh .ctmia-speaker{
+  font-weight:650; margin:0; color:var(--brand-700);
+}
+#chuong-trinh .ctmia-unit{
+  margin:2px 0 0; color:var(--ct-muted); font-size:.80rem; font-weight:400;
+}
+#chuong-trinh .ctmia-report-meta{
+  display:flex;gap:5px;align-items:center;flex-wrap:wrap;
+}
+#chuong-trinh .ctmia-badge,
+#chuong-trinh .ctmia-room-chip{
+  display:inline-flex;align-items:center;border-radius:999px;
+  padding:4px 8px;font-size:.66rem;font-weight:650;
+}
+#chuong-trinh .ctmia-badge-regular{
+  background:#eef6ff; color:var(--brand-700); border:1px solid rgba(21,101,192,.10);
+}
+#chuong-trinh .ctmia-badge-ncs{
+  background:var(--ct-shell); color:var(--brand-700); border:1px solid rgba(21,101,192,.13);
+}
+#chuong-trinh .ctmia-badge-invited{
+  background:var(--brand-700); color:#fff;
+}
+#chuong-trinh .ctmia-room-chip{
+  background:var(--ct-shell); color:var(--ct-muted); border:1px solid rgba(15,23,42,.08);
+}
+
+/* Báo cáo toàn thể */
+#chuong-trinh .ctmia-plenary-card{
+  display:grid; grid-template-columns:132px 1fr; gap:14px; padding:14px;
+  border:1px solid rgba(21,101,192,.18);
+  background:linear-gradient(120deg,var(--ct-shell),#fff);
+  border-radius:12px;
+}
+#chuong-trinh .ctmia-plenary-time{
+  font-size:.92rem; font-weight:650; color:var(--brand-700);
+}
+#chuong-trinh .ctmia-plenary-body h3{font-size:1.04rem}
+
+/* Báo cáo chỉ tại Giảng đường Hòa Bình */
+#chuong-trinh .ctmia-single-list{padding:0 2px}
+#chuong-trinh .ctmia-single-report{
+  display:grid; grid-template-columns:112px 1fr; gap:12px;
+  padding:11px 0; border-bottom:1px solid var(--ct-border);
+}
+#chuong-trinh .ctmia-single-report:last-child{border-bottom:0}
+#chuong-trinh .ctmia-report-time{
+  font-weight:650; font-variant-numeric:tabular-nums; color:var(--ct-muted);
+  font-size:.84rem; padding-top:2px; display:flex; flex-direction:column;
+}
+#chuong-trinh .ctmia-time-sep{display:none}
+
+#chuong-trinh .ctmia-no-results{
+  display:none;text-align:center;padding:18px;color:var(--ct-muted);
+  background:var(--ct-shell);border-radius:10px;
+}
+#chuong-trinh .ctmia-hidden{display:none!important}
+
+@media(max-width:900px){
+  #chuong-trinh .ctmia-parallel-header{display:none}
+  #chuong-trinh .ctmia-parallel-row{
+    display:grid; grid-template-columns:1fr; padding:10px 12px;
+  }
+  #chuong-trinh .ctmia-parallel-time{
+    padding:0 0 8px; background:transparent; color:var(--brand-700);
+  }
+  #chuong-trinh .ctmia-parallel-cell{
+    border-left:0; border-top:1px solid var(--ct-border); padding:10px 0 0;
+  }
+  #chuong-trinh .ctmia-parallel-cell + .ctmia-parallel-cell{
+    margin-top:10px;
+  }
+  #chuong-trinh .ctmia-parallel-cell::before{
+    content:attr(data-room);
+  }
+  #chuong-trinh .ctmia-parallel-report::before{
+    content:attr(data-room);
+    display:block; margin-bottom:6px; color:var(--brand-700);
+    font-size:.80rem; font-weight:700;
+  }
+  #chuong-trinh .ctmia-parallel-break-content{
+    grid-column:auto; border-left:0; padding:8px 0 0; background:transparent;
+  }
+  #chuong-trinh .ctmia-simple-event,
+  #chuong-trinh .ctmia-plenary-card,
+  #chuong-trinh .ctmia-single-report{grid-template-columns:1fr}
+  #chuong-trinh .ctmia-report-time{flex-direction:row;gap:5px}
+  #chuong-trinh .ctmia-time-sep{display:inline}
+  #chuong-trinh .ctmia-day-title{align-items:start;flex-direction:column}
+}
+@media print{
+  #chuong-trinh .ctmia-toolbar{display:none!important}
+  #chuong-trinh .ctmia-session-group{display:block!important}
+  #chuong-trinh .ctmia-session,
+  #chuong-trinh .ctmia-parallel-table,
+  #chuong-trinh .ctmia-plenary-card{box-shadow:none;break-inside:avoid}
+}
+</style>
+
+<div class="ctmia-program">
+  <div class="ctmia-toolbar">
+    <div class="ctmia-session-tabs" role="group" aria-label="Chọn buổi chương trình">
+      <button type="button" class="ctmia-session-btn is-active" data-session-filter="all" aria-pressed="true">Tất cả</button>
+      <button type="button" class="ctmia-session-btn" data-session-filter="1" aria-pressed="false">Buổi 1 · Sáng 13/08</button>
+      <button type="button" class="ctmia-session-btn" data-session-filter="2" aria-pressed="false">Buổi 2 · Chiều 13/08</button>
+      <button type="button" class="ctmia-session-btn" data-session-filter="3" aria-pressed="false">Buổi 3 · Sáng 14/08</button>
+      <button type="button" class="ctmia-session-btn" data-session-filter="4" aria-pressed="false">Buổi 4 · Chiều 14/08</button>
+    </div>
+    <label class="ctmia-search">
+      <input id="ctmia-program-search" type="search" placeholder="Tìm tên báo cáo, diễn giả, đơn vị…" aria-label="Tìm kiếm chương trình">
+    </label>
+  </div>
+
+  <div class="ctmia-day" data-day="1">
+    <div class="ctmia-day-title">
+      <h3>Ngày 1 · Thứ Năm, 13/08/2026</h3>
+      <p>Buổi sáng &amp; buổi chiều</p>
+    </div>
+
+    <div class="ctmia-session-group" data-session="1">
+      <section class="ctmia-session">
+        <div class="ctmia-session-title">
+          <div><h3>Buổi 1 · Sáng</h3><p>Khung giờ toàn thể – Giảng đường Hòa Bình</p></div>
+          <span class="ctmia-session-chip">07:00–11:50</span>
+        </div>
+        <div class="ctmia-simple-event">
+          <div class="ctmia-time">07:00–08:00</div>
+          <div><h4>Đón tiếp đại biểu</h4><p>60 phút</p></div>
+        </div>
+        <div class="ctmia-simple-event">
+          <div class="ctmia-time">08:00–08:10</div>
+          <div><h4>Khai mạc</h4><p>MC giới thiệu và Trưởng BTC phát biểu</p></div>
+        </div>
+        
+<article class="ctmia-plenary-card ctmia-report-card invited" data-search="báo cáo mời 1 some inverse problems in diffusion processes gs. tskh. đinh nho hào viện toán học, viện hàn lâm khoa học và công nghệ việt nam">
+  <div class="ctmia-plenary-time">08:10 – 09:10</div>
+  <div class="ctmia-plenary-body">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-invited">Báo cáo mời 1</span>
+      <span class="ctmia-room-chip">Giảng đường Hòa Bình</span>
+    </div>
+    <h3>Some Inverse Problems in Diffusion Processes</h3>
+    <p class="ctmia-speaker">GS. TSKH. Đinh Nho Hào</p>
+    <p class="ctmia-unit">Viện Toán học, Viện Hàn lâm Khoa học và Công nghệ Việt Nam</p>
+  </div>
+</article>
+        <div class="ctmia-simple-event ctmia-break-event">
+          <div class="ctmia-time">09:10–09:50</div>
+          <div><h4>Giải lao và triển lãm</h4><p>10 phút đầu chụp hình lưu niệm · Triển lãm sản phẩm công nghệ lõi dựa trên nền tảng Toán học</p></div>
+        </div>
+      </section>
+
+      <section class="ctmia-session">
+        <div class="ctmia-session-title">
+          <div><h3>Buổi 1 · Khung giờ song song</h3></div>
+          <span class="ctmia-session-chip">09:50–11:50</span>
+        </div>
+        
+<div class="ctmia-parallel-table">
+  <div class="ctmia-parallel-header" aria-hidden="true">
+    <div>Khung giờ</div>
+    <div>Giảng đường Hòa Bình</div>
+    <div>Phòng NCS tại Triển lãm</div>
+  </div>
+  
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">09:50–10:10</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 1 nghiên cứu ứng dụng công nghệ hiện đại trong dự báo mực nước và cảnh báo nguy cơ ngập lụt đô thị ven biển việt nam pgs. ts. nguyễn văn hồng phân viện khoa học khí tượng thủy văn môi trường và biển" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 1</span>
+    </div>
+    <h4>Nghiên cứu ứng dụng công nghệ hiện đại trong dự báo mực nước và cảnh báo nguy cơ ngập lụt đô thị ven biển Việt Nam</h4>
+    <p class="ctmia-speaker">PGS. TS. Nguyễn Văn Hồng</p>
+    <p class="ctmia-unit">Phân viện Khoa học Khí tượng Thủy văn Môi trường và Biển</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 1 cấu trúc phụ thuộc của copula laplace-transform và ứng dụng trong tài chính ths. võ thị trúc giang trường đh bách khoa, đhqg-hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 1</span>
+    </div>
+    <h4>Cấu trúc phụ thuộc của Copula Laplace-transform và ứng dụng trong tài chính</h4>
+    <p class="ctmia-speaker">ThS. Võ Thị Trúc Giang</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">10:15–10:35</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 2 a boundary element method for non-homogeneous biharmonic equations in non-smooth domains ts. vũ anh mỹ học viện kỹ thuật quân sự (đh kỹ thuật lê quý đôn)" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 2</span>
+    </div>
+    <h4>A Boundary Element Method for Non-Homogeneous Biharmonic Equations in Non-Smooth Domains</h4>
+    <p class="ctmia-speaker">TS. Vũ Anh Mỹ</p>
+    <p class="ctmia-unit">Học viện Kỹ thuật Quân sự (ĐH Kỹ thuật Lê Quý Đôn)</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 2 a comparative analysis of gru and lstm networks for interval-valued foreign exchange market time series forecasting ths. chế ngọc hà trường đh bách khoa, đhqg-hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 2</span>
+    </div>
+    <h4>A Comparative Analysis of GRU and LSTM Networks for Interval-Valued Foreign Exchange Market Time Series Forecasting</h4>
+    <p class="ctmia-speaker">ThS. Chế Ngọc Hà</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">10:40–11:00</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 3 approximate proper efficiency in vector optimization via benson&#x27;s approach ts. nguyễn thị thu hương học viện kỹ thuật quân sự (đh kỹ thuật lê quý đôn)" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 3</span>
+    </div>
+    <h4>Approximate Proper Efficiency in Vector Optimization via Benson&#x27;s Approach</h4>
+    <p class="ctmia-speaker">TS. Nguyễn Thị Thu Hương</p>
+    <p class="ctmia-unit">Học viện Kỹ thuật Quân sự (ĐH Kỹ thuật Lê Quý Đôn)</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 3 existence and continuity of solutions to vector equilibrium problems in linear spaces ths. hà mạnh linh trường đh công nghệ thông tin, đhqg-hcm / trường đh bách khoa, đhqg-hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 3</span>
+    </div>
+    <h4>Existence and Continuity of Solutions to Vector Equilibrium Problems in Linear Spaces</h4>
+    <p class="ctmia-speaker">ThS. Hà Mạnh Linh</p>
+    <p class="ctmia-unit">Trường ĐH Công nghệ Thông tin, ĐHQG-HCM / Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">11:05–11:25</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 4 mathematical modeling, simulation, and optimization for autonomous industrial robots ts. pramod pal vnx robotics" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 4</span>
+    </div>
+    <h4>Mathematical Modeling, Simulation, and Optimization for Autonomous Industrial Robots</h4>
+    <p class="ctmia-speaker">TS. Pramod Pal</p>
+    <p class="ctmia-unit">VNX Robotics</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 4 phân loại có giám sát cho dữ liệu khoảng ths. huỳnh văn hiếu trường đh công nghiệp tp.hcm / trường đh bách khoa, đhqg-hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 4</span>
+    </div>
+    <h4>Phân loại có giám sát cho dữ liệu khoảng</h4>
+    <p class="ctmia-speaker">ThS. Huỳnh Văn Hiếu</p>
+    <p class="ctmia-unit">Trường ĐH Công nghiệp TP.HCM<br>Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">11:30–11:50</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 5 structure-based uav visual geo-localization via delaunay triangulation and ekeland free-cone angle descriptors anh nguyễn duy tân trường đh bách khoa, đhqg-hcm" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 5</span>
+    </div>
+    <h4>Structure-Based UAV Visual Geo-Localization via Delaunay Triangulation and Ekeland Free-Cone Angle Descriptors</h4>
+    <p class="ctmia-speaker">Anh Nguyễn Duy Tân</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 5 xây dựng thuật toán tự cập nhật chùm mờ cho dữ liệu điểm dựa vào sự tương tự hình tròn và áp dụng cho dữ liệu ảnh ths. lê đại nghiệp trường đh nam cần thơ / trường đh bách khoa, đhqg-hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 5</span>
+    </div>
+    <h4>Xây dựng thuật toán tự cập nhật chùm mờ cho dữ liệu điểm dựa vào sự tương tự hình tròn và áp dụng cho dữ liệu ảnh</h4>
+    <p class="ctmia-speaker">ThS. Lê Đại Nghiệp</p>
+    <p class="ctmia-unit">Trường ĐH Nam Cần Thơ / Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+</div>
+</div>
+      </section>
+    </div>
+
+    <div class="ctmia-session-group" data-session="2">
+      <section class="ctmia-session">
+        <div class="ctmia-session-title">
+          <div><h3>Buổi 2 · Chiều</h3><p>Khung giờ báo cáo song song</p></div>
+          <span class="ctmia-session-chip">Từ 13:30</span>
+        </div>
+        <div class="ctmia-note">Song song với đoàn đi trạm radar Nhà Bè dành cho các đại biểu có đăng ký.</div>
+        
+<div class="ctmia-parallel-table">
+  <div class="ctmia-parallel-header" aria-hidden="true">
+    <div>Khung giờ</div>
+    <div>Giảng đường Hòa Bình</div>
+    <div>Phòng NCS tại Triển lãm</div>
+  </div>
+  
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">13:30–13:50</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 6 a proposed discrete ricci flow ths. nguyễn anh tuấn trường đh bách khoa, đhqg-hcm" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 6</span>
+    </div>
+    <h4>A Proposed Discrete Ricci Flow</h4>
+    <p class="ctmia-speaker">ThS. Nguyễn Anh Tuấn</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 13 a revisit to point estimation through the empirical bayes method: the case of binomial distribution with beta prior and extension to poisson distribution ths. nguyễn quốc bảo trường đh tôn đức thắng / trường đh bách khoa, đhqg-hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 13</span>
+    </div>
+    <h4>A Revisit to Point Estimation through the Empirical Bayes Method: The Case of Binomial Distribution with Beta Prior and Extension to Poisson Distribution</h4>
+    <p class="ctmia-speaker">ThS. Nguyễn Quốc Bảo</p>
+    <p class="ctmia-unit">Trường ĐH Tôn Đức Thắng / Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">13:55–14:15</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 7 a dynamic successive funnel method with provably shorter paths for escape path planning amid moving obstacles ths. phạm thanh hữu công ty cổ phần ivs" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 7</span>
+    </div>
+    <h4>A Dynamic Successive Funnel Method with Provably Shorter Paths for Escape Path Planning amid Moving Obstacles</h4>
+    <p class="ctmia-speaker">ThS. Phạm Thanh Hữu</p>
+    <p class="ctmia-unit">Công ty Cổ phần IVS</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 14 strong second-order kkt conditions for multiobjective optimization problems with mixed constraints ths. nguyễn minh cương trường đh sài gòn / trường đh bách khoa, đhqg-hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 14</span>
+    </div>
+    <h4>Strong Second-Order KKT Conditions for Multiobjective Optimization Problems with Mixed Constraints</h4>
+    <p class="ctmia-speaker">ThS. Nguyễn Minh Cương</p>
+    <p class="ctmia-unit">Trường ĐH Sài Gòn / Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">14:20–14:40</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 8 accumulated subdifferentials and some applications in studying the behavior of functions around an accumulation point ths. trần tuấn minh trường đh bách khoa, đhqg-hcm" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 8</span>
+    </div>
+    <h4>Accumulated Subdifferentials and Some Applications in Studying the Behavior of Functions around an Accumulation Point</h4>
+    <p class="ctmia-speaker">ThS. Trần Tuấn Minh</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 15 a free boundary problem for spreading of an invasive species in the territory of a native competitor under shifting climate ths. đinh phước vinh phân hiệu trường đh fpt tại tp.hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 15</span>
+    </div>
+    <h4>A Free Boundary Problem for Spreading of an Invasive Species in the Territory of a Native Competitor under Shifting Climate</h4>
+    <p class="ctmia-speaker">ThS. Đinh Phước Vinh</p>
+    <p class="ctmia-unit">Phân hiệu Trường ĐH FPT tại TP.HCM</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">14:45–15:05</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 9 drone positioning in gnss/gps-denied environments using the orthogonal convex hull of building polygons in aerial images ths. trần anh dũng trường đh bách khoa, đhqg-hcm" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 9</span>
+    </div>
+    <h4>Drone Positioning in GNSS/GPS-Denied Environments Using the Orthogonal Convex Hull of Building Polygons in Aerial Images</h4>
+    <p class="ctmia-speaker">ThS. Trần Anh Dũng</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 16 xây dựng mô hình dự báo cho chuỗi thời gian khoảng dựa trên chuỗi điểm và các mối quan hệ mờ ths. nguyễn huỳnh luận trường đh văn lang" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 16</span>
+    </div>
+    <h4>Xây dựng mô hình dự báo cho chuỗi thời gian khoảng dựa trên chuỗi điểm và các mối quan hệ mờ</h4>
+    <p class="ctmia-speaker">ThS. Nguyễn Huỳnh Luận</p>
+    <p class="ctmia-unit">Trường ĐH Văn Lang</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row ctmia-parallel-break">
+  <div class="ctmia-parallel-time">15:05–15:25</div>
+  <div class="ctmia-parallel-break-content">
+    <strong>Giải lao chung</strong><span>20 phút</span>
+  </div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">15:25–15:45</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 10 ứng dụng thuật toán phân tích chùm bán giám sát cho hàm mật độ xác suất trong nhận diện ảnh ths. nguyễn hoàng yến đh y dược tp.hcm" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 10</span>
+    </div>
+    <h4>Ứng dụng thuật toán phân tích chùm bán giám sát cho hàm mật độ xác suất trong nhận diện ảnh</h4>
+    <p class="ctmia-speaker">ThS. Nguyễn Hoàng Yến</p>
+    <p class="ctmia-unit">ĐH Y Dược TP.HCM</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 17 ứng dụng ước lượng mật độ xác suất kết hợp đặc trưng miền không gian và miền tần số trong phân loại ảnh ths. nguyễn chí thiện viện nghiên cứu và đào tạo việt - anh, đh đà nẵng" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 17</span>
+    </div>
+    <h4>Ứng dụng ước lượng mật độ xác suất kết hợp đặc trưng miền không gian và miền tần số trong phân loại ảnh</h4>
+    <p class="ctmia-speaker">ThS. Nguyễn Chí Thiện</p>
+    <p class="ctmia-unit">Viện Nghiên cứu và Đào tạo Việt - Anh, ĐH Đà Nẵng</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">15:50–16:10</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 11 approximating the visibility problem via neural networks with application to crack width estimation ths. nguyễn hoàng hải trường đh bách khoa, đhqg-hcm" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 11</span>
+    </div>
+    <h4>Approximating the Visibility Problem via Neural Networks with Application to Crack Width Estimation</h4>
+    <p class="ctmia-speaker">ThS. Nguyễn Hoàng Hải</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 18 the p-facility anti-cent-dian location problem on trees ths. trần thanh hiệp phân hiệu trường đh fpt tại tp.hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 18</span>
+    </div>
+    <h4>The p-Facility Anti-Cent-Dian Location Problem on Trees</h4>
+    <p class="ctmia-speaker">ThS. Trần Thanh Hiệp</p>
+    <p class="ctmia-unit">Phân hiệu Trường ĐH FPT tại TP.HCM</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">16:15–16:35</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 12 point estimation of the association parameter of a bivariate frank copula: an evaluation of various classical and bayes estimators ths. phạm thị yến anh trường đh tôn đức thắng / trường đh bách khoa, đhqg-hcm" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 12</span>
+    </div>
+    <h4>Point Estimation of the Association Parameter of a Bivariate Frank Copula: An Evaluation of Various Classical and Bayes Estimators</h4>
+    <p class="ctmia-speaker">ThS. Phạm Thị Yến Anh</p>
+    <p class="ctmia-unit">Trường ĐH Tôn Đức Thắng / Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report ncs" data-search="báo cáo ncs 19 some decay results for biparabolic equation ths. lê thị yến nhi trường đh bách khoa, đhqg-hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-ncs">Báo cáo NCS 19</span>
+    </div>
+    <h4>Some Decay Results for Biparabolic Equation</h4>
+    <p class="ctmia-speaker">ThS. Lê Thị Yến Nhi</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+</div>
+</div>
+      </section>
+    </div>
+  </div>
+
+  <div class="ctmia-day" data-day="2">
+    <div class="ctmia-day-title">
+      <h3>Ngày 2 · Thứ Sáu, 14/08/2026</h3>
+      <p>Buổi sáng &amp; buổi chiều</p>
+    </div>
+
+    <div class="ctmia-session-group" data-session="3">
+      <section class="ctmia-session">
+        <div class="ctmia-session-title">
+          <div><h3>Buổi 3 · Sáng</h3><p>Khung giờ toàn thể – Giảng đường Hòa Bình</p></div>
+          <span class="ctmia-session-chip">08:00–11:45</span>
+        </div>
+        
+<article class="ctmia-plenary-card ctmia-report-card invited" data-search="báo cáo mời 2 physical ai. how it works for actual life/works mr. toshiharu sato công ty forcix">
+  <div class="ctmia-plenary-time">08:00 – 09:00</div>
+  <div class="ctmia-plenary-body">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-invited">Báo cáo mời 2</span>
+      <span class="ctmia-room-chip">Giảng đường Hòa Bình</span>
+    </div>
+    <h3>Physical AI. How It Works for Actual Life/Works</h3>
+    <p class="ctmia-speaker">Mr. Toshiharu Sato</p>
+    <p class="ctmia-unit">Công ty FORCIX</p>
+  </div>
+</article>
+        <div class="ctmia-simple-event ctmia-break-event">
+          <div class="ctmia-time">09:00–09:20</div>
+          <div><h4>Giải lao chung</h4><p>20 phút</p></div>
+        </div>
+      </section>
+
+      <section class="ctmia-session">
+        <div class="ctmia-session-title">
+          <div><h3>Buổi 3 · Khung giờ song song</h3></div>
+          <span class="ctmia-session-chip">09:20–11:45</span>
+        </div>
+        
+<div class="ctmia-parallel-table">
+  <div class="ctmia-parallel-header" aria-hidden="true">
+    <div>Khung giờ</div>
+    <div>Giảng đường Hòa Bình</div>
+    <div>Phòng NCS tại Triển lãm</div>
+  </div>
+  
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">09:20–09:40</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 6 is matrix neural network the alternative of convolutional neural network? tskh. nguyễn phước lộc loc nguyen&#x27;s academic network" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 6</span>
+    </div>
+    <h4>Is Matrix Neural Network the Alternative of Convolutional Neural Network?</h4>
+    <p class="ctmia-speaker">TSKH. Nguyễn Phước Lộc</p>
+    <p class="ctmia-unit">Loc Nguyen&#x27;s Academic Network</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 12 the performance of actor-critic model based on the probability of gaussian distribution ths. phạm xuân hiển trường đh bách khoa, đhqg-hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 12</span>
+    </div>
+    <h4>The Performance of Actor-Critic Model Based on the Probability of Gaussian Distribution</h4>
+    <p class="ctmia-speaker">ThS. Phạm Xuân Hiển</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">09:45–10:05</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 7 incremental convex hull approach for solving the shortest path problem of autonomous robots in unknown environments in 2d anh nguyễn trần thế hiển trường đh bách khoa, đhqg-hcm" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 7</span>
+    </div>
+    <h4>Incremental Convex Hull Approach for Solving the Shortest Path Problem of Autonomous Robots in Unknown Environments in 2D</h4>
+    <p class="ctmia-speaker">Anh Nguyễn Trần Thế Hiển</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 13 duality and boundedness results in generalized morrey-lorentz space ths. lê trung nghĩa trường đh tôn đức thắng" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 13</span>
+    </div>
+    <h4>Duality and Boundedness Results in Generalized Morrey-Lorentz Space</h4>
+    <p class="ctmia-speaker">ThS. Lê Trung Nghĩa</p>
+    <p class="ctmia-unit">Trường ĐH Tôn Đức Thắng</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">10:10–10:30</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 8 geometry-informed reconstruction of pothole surfaces via a depth function and monotonic neural networks anh trần tuấn nghĩa trường đh bách khoa, đhqg-hcm" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 8</span>
+    </div>
+    <h4>Geometry-Informed Reconstruction of Pothole Surfaces via a Depth Function and Monotonic Neural Networks</h4>
+    <p class="ctmia-speaker">Anh Trần Tuấn Nghĩa</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 14 nonsmooth set-based pareto stationarity conditions for multiobjective optimization problems ths. trần võ anh khoa trường đh tôn đức thắng" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 14</span>
+    </div>
+    <h4>Nonsmooth Set-Based Pareto Stationarity Conditions for Multiobjective Optimization Problems</h4>
+    <p class="ctmia-speaker">ThS. Trần Võ Anh Khoa</p>
+    <p class="ctmia-unit">Trường ĐH Tôn Đức Thắng</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">10:35–10:55</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 9 widths of compact sets in normed spaces and an application in measuring crack widths pgs. ts. nguyễn ngọc hải trường đh quốc tế, đhqg-hcm" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 9</span>
+    </div>
+    <h4>Widths of Compact Sets in Normed Spaces and an Application in Measuring Crack Widths</h4>
+    <p class="ctmia-speaker">PGS. TS. Nguyễn Ngọc Hải</p>
+    <p class="ctmia-unit">Trường ĐH Quốc tế, ĐHQG-HCM</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 15 degenerate configuration-aware geometric control for swarm robotics in unknown 2d environments ths. đỗ hoàng thái dương viện toán học và các khoa học tính toán (imacs)" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 15</span>
+    </div>
+    <h4>Degenerate Configuration-Aware Geometric Control for Swarm Robotics in Unknown 2D Environments</h4>
+    <p class="ctmia-speaker">ThS. Đỗ Hoàng Thái Dương</p>
+    <p class="ctmia-unit">Viện Toán học và các Khoa học Tính toán (IMACS)</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">11:00–11:20</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 10 minimax optimal estimation of the cumulative distribution function from repeated measurements under laplace errors ths. bùi thùy trang trường đh tôn đức thắng" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 10</span>
+    </div>
+    <h4>Minimax Optimal Estimation of the Cumulative Distribution Function from Repeated Measurements under Laplace Errors</h4>
+    <p class="ctmia-speaker">ThS. Bùi Thùy Trang</p>
+    <p class="ctmia-unit">Trường ĐH Tôn Đức Thắng</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 16 from probabilistic filtering to deterministic geometric verification: a vector-map matching pipeline for gnss-denied uav localization anh khưu huỳnh gia hưng trường đh bách khoa, đhqg-hcm" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 16</span>
+    </div>
+    <h4>From Probabilistic Filtering to Deterministic Geometric Verification: A Vector-Map Matching Pipeline for GNSS-Denied UAV Localization</h4>
+    <p class="ctmia-speaker">Anh Khưu Huỳnh Gia Hưng</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+</div>
+<div class="ctmia-parallel-row" data-parallel-row>
+  <div class="ctmia-parallel-time">11:25–11:45</div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 11 an enhanced tchebychev radial point interpolation method with natural-neighbor support and cartesian transformation for bone remodeling analysis cử nhân đinh hoàng duy khánh trường đh bách khoa, đhqg-hcm" data-room="Giảng đường Hòa Bình">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 11</span>
+    </div>
+    <h4>An Enhanced Tchebychev Radial Point Interpolation Method with Natural-Neighbor Support and Cartesian Transformation for Bone Remodeling Analysis</h4>
+    <p class="ctmia-speaker">Cử nhân Đinh Hoàng Duy Khánh</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+  <div class="ctmia-parallel-cell">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 17 ảnh hưởng của biến đổi khí hậu và cảnh báo thiên tai khu vực nam bộ ths. lê đình quyết đài khí tượng thủy văn khu vực nam bộ, cục khí tượng thủy văn" data-room="Phòng NCS tại Triển lãm">
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-regular">Báo cáo 17</span>
+    </div>
+    <h4>Ảnh hưởng của biến đổi khí hậu và cảnh báo thiên tai khu vực Nam Bộ</h4>
+    <p class="ctmia-speaker">ThS. Lê Đình Quyết</p>
+    <p class="ctmia-unit">Đài Khí tượng Thủy văn khu vực Nam Bộ, Cục Khí tượng Thủy văn</p>
+  </div>
+</article></div>
+</div>
+</div>
+      </section>
+    </div>
+
+    <div class="ctmia-session-group" data-session="4">
+      <section class="ctmia-session">
+        <div class="ctmia-session-title">
+          <div><h3>Buổi 4 · Chiều</h3><p>Khung giờ toàn thể – Giảng đường Hòa Bình</p></div>
+          <span class="ctmia-session-chip">13:30–16:15</span>
+        </div>
+        
+<article class="ctmia-plenary-card ctmia-report-card invited" data-search="báo cáo mời 3 from markov data to transformers: new generalization theory for modern deep learning ts. trương vĩnh lân trường đh bách khoa, đhqg-hcm">
+  <div class="ctmia-plenary-time">13:30 – 14:30</div>
+  <div class="ctmia-plenary-body">
+    <div class="ctmia-report-meta">
+      <span class="ctmia-badge ctmia-badge-invited">Báo cáo mời 3</span>
+      <span class="ctmia-room-chip">Giảng đường Hòa Bình</span>
+    </div>
+    <h3>From Markov Data to Transformers: New Generalization Theory for Modern Deep Learning</h3>
+    <p class="ctmia-speaker">TS. Trương Vĩnh Lân</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article>
+        <div class="ctmia-simple-event ctmia-break-event">
+          <div class="ctmia-time">14:30–14:50</div>
+          <div><h4>Giải lao chung</h4><p>20 phút</p></div>
+        </div>
+        
+        <div class="ctmia-single-list">
+<article class="ctmia-report-card ctmia-single-report regular" data-search="báo cáo 18 geometry-guided hybrid path planning for autonomous mobile robots in dynamic environments: weighted voronoi diagrams, β-complexes, and fuzzy supervision anh hoàng minh anh tú trường đh bách khoa, đhqg-hcm">
+  <div class="ctmia-report-time"><span>14:50</span><span class="ctmia-time-sep">–</span><span>15:10</span></div>
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta"><span class="ctmia-badge ctmia-badge-regular">Báo cáo 18</span></div>
+    <h4>Geometry-Guided Hybrid Path Planning for Autonomous Mobile Robots in Dynamic Environments: Weighted Voronoi Diagrams, β-Complexes, and Fuzzy Supervision</h4>
+    <p class="ctmia-speaker">Anh Hoàng Minh Anh Tú</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article>
+<article class="ctmia-report-card ctmia-single-report regular" data-search="báo cáo 19 a cnn-convlstm deep learning model with axial attention for radar reflectivity-based precipitation nowcasting in southern vietnam ths. nguyễn văn gia thịnh viện toán học và các khoa học tính toán (imacs)">
+  <div class="ctmia-report-time"><span>15:15</span><span class="ctmia-time-sep">–</span><span>15:35</span></div>
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta"><span class="ctmia-badge ctmia-badge-regular">Báo cáo 19</span></div>
+    <h4>A CNN-ConvLSTM Deep Learning Model with Axial Attention for Radar Reflectivity-Based Precipitation Nowcasting in Southern Vietnam</h4>
+    <p class="ctmia-speaker">ThS. Nguyễn Văn Gia Thịnh</p>
+    <p class="ctmia-unit">Viện Toán học và các Khoa học Tính toán (IMACS)</p>
+  </div>
+</article>
+<article class="ctmia-report-card ctmia-single-report regular" data-search="báo cáo 20 an efficient algorithm for orthogonal convex hull construction and its application to image feature extraction ths. trần anh dũng trường đh bách khoa, đhqg-hcm">
+  <div class="ctmia-report-time"><span>15:40</span><span class="ctmia-time-sep">–</span><span>16:00</span></div>
+  <div class="ctmia-report-main">
+    <div class="ctmia-report-meta"><span class="ctmia-badge ctmia-badge-regular">Báo cáo 20</span></div>
+    <h4>An Efficient Algorithm for Orthogonal Convex Hull Construction and Its Application to Image Feature Extraction</h4>
+    <p class="ctmia-speaker">ThS. Trần Anh Dũng</p>
+    <p class="ctmia-unit">Trường ĐH Bách khoa, ĐHQG-HCM</p>
+  </div>
+</article></div>
+        <div class="ctmia-simple-event">
+          <div class="ctmia-time">16:00–16:15</div>
+          <div><h4>Bế mạc</h4><p>Trưởng ban tổ chức phát biểu</p></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div id="ctmia-program-no-results" class="ctmia-no-results">Không tìm thấy báo cáo phù hợp.</div>
+</div>
+
+<script>
+(function () {
+  const root = document.querySelector('#chuong-trinh .ctmia-program');
+  if (!root) return;
+
+  const buttons = Array.from(root.querySelectorAll('.ctmia-session-btn'));
+  const groups = Array.from(root.querySelectorAll('.ctmia-session-group'));
+  const days = Array.from(root.querySelectorAll('.ctmia-day'));
+  const reports = Array.from(root.querySelectorAll('.ctmia-report-card'));
+  const parallelRows = Array.from(root.querySelectorAll('[data-parallel-row]'));
+  const search = document.getElementById('ctmia-program-search');
+  const noResults = document.getElementById('ctmia-program-no-results');
+  let selectedSession = 'all';
+
+  function normalize(s) {
+    return (s || '').toLocaleLowerCase('vi')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function applyFilters() {
+    const q = normalize(search ? search.value.trim() : '');
+
+    groups.forEach(group => {
+      const sessionMatch = selectedSession === 'all' || group.dataset.session === selectedSession;
+      group.classList.toggle('ctmia-hidden', !sessionMatch);
+    });
+
+    reports.forEach(card => {
+      const group = card.closest('.ctmia-session-group');
+      const sessionMatch = !group || selectedSession === 'all' || group.dataset.session === selectedSession;
+      const textMatch = !q || normalize(card.dataset.search || card.innerText).includes(q);
+      card.classList.toggle('ctmia-hidden', !(sessionMatch && textMatch));
+    });
+
+    parallelRows.forEach(row => {
+      const cards = Array.from(row.querySelectorAll('.ctmia-report-card'));
+      if (!cards.length) return;
+      const anyVisible = cards.some(card => !card.classList.contains('ctmia-hidden'));
+      row.classList.toggle('ctmia-hidden', !anyVisible);
+    });
+
+    days.forEach(day => {
+      const visibleGroup = Array.from(day.querySelectorAll('.ctmia-session-group'))
+        .some(group => !group.classList.contains('ctmia-hidden'));
+      day.classList.toggle('ctmia-hidden', !visibleGroup);
+    });
+
+    const visibleReports = reports.filter(card => !card.classList.contains('ctmia-hidden')).length;
+    if (noResults) noResults.style.display = (q && visibleReports === 0) ? 'block' : 'none';
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', function () {
+      selectedSession = this.dataset.sessionFilter || 'all';
+      buttons.forEach(b => {
+        const active = b === this;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      applyFilters();
+    });
+  });
+
+  if (search) search.addEventListener('input', applyFilters);
+  applyFilters();
+})();
+</script>
 </section>
+
 
 <section class="imacs-section" id="lien-he">
 <h2>Liên hệ</h2>
