@@ -671,37 +671,75 @@ https://forms.gle/vKxmmPkDMBsHMNjB7
   margin-top:12px;
 }
 
-/* Bộ chọn buổi */
+/* Bộ chọn buổi - CSS-only, không dùng JavaScript */
 #chuong-trinh .ctmia-toolbar{
   display:flex; flex-direction:column; gap:10px; align-items:stretch;
   margin:0 0 16px; padding:12px; border:1px solid var(--ct-border);
   background:var(--ct-shell); border-radius:12px;
 }
+
+/* Ẩn radio về mặt thị giác nhưng vẫn giữ khả năng điều khiển bằng label/bàn phím */
+#chuong-trinh .ctmia-filter-radio{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+
 #chuong-trinh .ctmia-session-tabs{display:flex;gap:7px;flex-wrap:wrap}
 #chuong-trinh .ctmia-session-btn{
+  display:inline-block;
   appearance:none; border:1px solid rgba(21,101,192,.22); background:#fff;
   color:var(--brand-900); padding:8px 12px; border-radius:10px;
   font:inherit; font-size:13px; font-weight:650; cursor:pointer;
+  user-select:none;
   transition:background .15s ease,color .15s ease,border-color .15s ease,box-shadow .15s ease,transform .15s ease;
 }
 #chuong-trinh .ctmia-session-btn:hover{
   background:var(--ct-panel); border-color:rgba(21,101,192,.34); transform:translateY(-1px);
 }
-#chuong-trinh .ctmia-session-btn:focus-visible{outline:none;box-shadow:var(--ring)}
-#chuong-trinh .ctmia-session-btn.is-active,
-#chuong-trinh .ctmia-session-btn[aria-pressed="true"]{
+
+/* Nút đang được chọn */
+#ctmia-filter-all:checked ~ .ctmia-toolbar label[for="ctmia-filter-all"],
+#ctmia-filter-1:checked ~ .ctmia-toolbar label[for="ctmia-filter-1"],
+#ctmia-filter-2:checked ~ .ctmia-toolbar label[for="ctmia-filter-2"],
+#ctmia-filter-3:checked ~ .ctmia-toolbar label[for="ctmia-filter-3"],
+#ctmia-filter-4:checked ~ .ctmia-toolbar label[for="ctmia-filter-4"]{
   color:#fff; background:var(--brand-700); border-color:var(--brand-700);
   box-shadow:0 4px 10px rgba(21,101,192,.16);
 }
-#chuong-trinh .ctmia-search{display:flex;align-items:center;width:100%}
-#chuong-trinh .ctmia-search input{
-  width:100%; border:1px solid var(--ct-border); border-radius:10px;
-  padding:9px 11px; font:inherit; background:#fff; color:var(--ct-soft);
+
+/* Hiển thị focus khi điều khiển bằng bàn phím */
+#ctmia-filter-all:focus-visible ~ .ctmia-toolbar label[for="ctmia-filter-all"],
+#ctmia-filter-1:focus-visible ~ .ctmia-toolbar label[for="ctmia-filter-1"],
+#ctmia-filter-2:focus-visible ~ .ctmia-toolbar label[for="ctmia-filter-2"],
+#ctmia-filter-3:focus-visible ~ .ctmia-toolbar label[for="ctmia-filter-3"],
+#ctmia-filter-4:focus-visible ~ .ctmia-toolbar label[for="ctmia-filter-4"]{
+  outline:none;
+  box-shadow:var(--ring), 0 4px 10px rgba(21,101,192,.16);
 }
-#chuong-trinh .ctmia-search input::placeholder{color:#94a3b8}
-#chuong-trinh .ctmia-search input:focus{
-  outline:none; border-color:rgba(30,136,229,.48); box-shadow:var(--ring);
+
+/* Lọc theo buổi */
+#ctmia-filter-1:checked ~ .ctmia-day .ctmia-session-group:not([data-session="1"]),
+#ctmia-filter-2:checked ~ .ctmia-day .ctmia-session-group:not([data-session="2"]),
+#ctmia-filter-3:checked ~ .ctmia-day .ctmia-session-group:not([data-session="3"]),
+#ctmia-filter-4:checked ~ .ctmia-day .ctmia-session-group:not([data-session="4"]){
+  display:none;
 }
+
+/* Ẩn ngày không chứa buổi đang chọn */
+#ctmia-filter-1:checked ~ .ctmia-day[data-day="2"],
+#ctmia-filter-2:checked ~ .ctmia-day[data-day="2"],
+#ctmia-filter-3:checked ~ .ctmia-day[data-day="1"],
+#ctmia-filter-4:checked ~ .ctmia-day[data-day="1"]{
+  display:none;
+}
+
 #chuong-trinh .ctmia-lang-legend{
   display:flex; flex-wrap:wrap; gap:6px 18px;
   font-size:.78rem; color:var(--ct-muted);
@@ -911,12 +949,6 @@ https://forms.gle/vKxmmPkDMBsHMNjB7
 }
 #chuong-trinh .ctmia-time-sep{display:none}
 
-#chuong-trinh .ctmia-no-results{
-  display:none;text-align:center;padding:18px;color:var(--ct-muted);
-  background:var(--ct-shell);border-radius:10px;
-}
-#chuong-trinh .ctmia-hidden{display:none!important}
-
 @media(max-width:900px){
   #chuong-trinh .ctmia-parallel-header{display:none}
   #chuong-trinh .ctmia-parallel-row{
@@ -953,7 +985,9 @@ https://forms.gle/vKxmmPkDMBsHMNjB7
   #chuong-trinh .ctmia-day-title{align-items:start;flex-direction:column}
 }
 @media print{
-  #chuong-trinh .ctmia-toolbar{display:none!important}
+  #chuong-trinh .ctmia-toolbar,
+  #chuong-trinh .ctmia-filter-radio{display:none!important}
+  #chuong-trinh .ctmia-day,
   #chuong-trinh .ctmia-session-group{display:block!important}
   #chuong-trinh .ctmia-session,
   #chuong-trinh .ctmia-parallel-table,
@@ -962,17 +996,21 @@ https://forms.gle/vKxmmPkDMBsHMNjB7
 </style>
 
 <div class="ctmia-program">
+  <!-- Bộ lọc CSS-only: các radio phải nằm trước toolbar và các khối ngày -->
+  <input class="ctmia-filter-radio" type="radio" name="ctmia-session-filter" id="ctmia-filter-all" checked>
+  <input class="ctmia-filter-radio" type="radio" name="ctmia-session-filter" id="ctmia-filter-1">
+  <input class="ctmia-filter-radio" type="radio" name="ctmia-session-filter" id="ctmia-filter-2">
+  <input class="ctmia-filter-radio" type="radio" name="ctmia-session-filter" id="ctmia-filter-3">
+  <input class="ctmia-filter-radio" type="radio" name="ctmia-session-filter" id="ctmia-filter-4">
+
   <div class="ctmia-toolbar">
     <div class="ctmia-session-tabs" role="group" aria-label="Chọn buổi chương trình">
-      <button type="button" class="ctmia-session-btn is-active" data-session-filter="all" aria-pressed="true">Tất cả</button>
-      <button type="button" class="ctmia-session-btn" data-session-filter="1" aria-pressed="false">Buổi 1 · Sáng 13/08</button>
-      <button type="button" class="ctmia-session-btn" data-session-filter="2" aria-pressed="false">Buổi 2 · Chiều 13/08</button>
-      <button type="button" class="ctmia-session-btn" data-session-filter="3" aria-pressed="false">Buổi 3 · Sáng 14/08</button>
-      <button type="button" class="ctmia-session-btn" data-session-filter="4" aria-pressed="false">Buổi 4 · Chiều 14/08</button>
+      <label class="ctmia-session-btn" for="ctmia-filter-all">Tất cả</label>
+      <label class="ctmia-session-btn" for="ctmia-filter-1">Buổi 1 · Sáng 13/08</label>
+      <label class="ctmia-session-btn" for="ctmia-filter-2">Buổi 2 · Chiều 13/08</label>
+      <label class="ctmia-session-btn" for="ctmia-filter-3">Buổi 3 · Sáng 14/08</label>
+      <label class="ctmia-session-btn" for="ctmia-filter-4">Buổi 4 · Chiều 14/08</label>
     </div>
-    <label class="ctmia-search">
-      <input id="ctmia-program-search" type="search" placeholder="Tìm tên báo cáo, diễn giả, đơn vị…" aria-label="Tìm kiếm chương trình">
-    </label>
     <div class="ctmia-lang-legend">
       <span><span class="ctmia-lang-badge ctmia-lang-en">EN</span>Báo cáo dùng ngôn ngữ là tiếng Anh</span>
       <span><span class="ctmia-lang-badge ctmia-lang-vn">VN</span>Báo cáo dùng ngôn ngữ là tiếng Việt</span>
@@ -1051,10 +1089,10 @@ https://forms.gle/vKxmmPkDMBsHMNjB7
 <div class="ctmia-parallel-row" data-parallel-row>
   <div class="ctmia-parallel-time">10:15–10:35</div>
   <div class="ctmia-parallel-cell">
-<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 2 geometry-informed reconstruction of pothole surfaces via a depth function and monotonic neural networks anh trần tuấn nghĩa trường đại học bách khoa - đại học quốc gia tp.hcm" data-room="Giảng đường Hòa Bình (phía sau tòa nhà B6)">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 2 ảnh hưởng của biến đổi khí hậu và cảnh báo thiên tai khu vực nam bộ ths. lê đình quyết đài khí tượng thủy văn nam bộ, cục kttv" data-room="Giảng đường Hòa Bình (phía sau tòa nhà B6)">
   <div class="ctmia-report-main">
-<h4><span class="ctmia-lang-badge ctmia-lang-vn">VN</span>Geometry-Informed Reconstruction of Pothole Surfaces via a Depth Function and Monotonic Neural Networks</h4>
-    <p class="ctmia-speaker">N. H. Hai, P. T. An, P. T. Huu, P. D. Khoa, T. V. Hoai, and <u>T. T. Nghia</u></p>
+<h4><span class="ctmia-lang-badge ctmia-lang-vn">VN</span>Ảnh hưởng của biến đổi khí hậu và cảnh báo thiên tai khu vực Nam Bộ</h4>
+    <p class="ctmia-speaker"><u>L. Đ. Quyết</u></p>
 </div>
 </article></div>
   <div class="ctmia-parallel-cell">
@@ -1403,10 +1441,10 @@ https://forms.gle/vKxmmPkDMBsHMNjB7
 <div class="ctmia-parallel-row" data-parallel-row>
   <div class="ctmia-parallel-time">11:25–11:45</div>
   <div class="ctmia-parallel-cell">
-<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 18 ảnh hưởng của biến đổi khí hậu và cảnh báo thiên tai khu vực nam bộ ths. lê đình quyết đài khí tượng thủy văn nam bộ, cục kttv" data-room="Giảng đường Hòa Bình (phía sau tòa nhà B6)">
+<article class="ctmia-report-card ctmia-parallel-report regular" data-search="báo cáo 18 geometry-informed reconstruction of pothole surfaces via a depth function and monotonic neural networks anh trần tuấn nghĩa trường đại học bách khoa - đại học quốc gia tp.hcm" data-room="Giảng đường Hòa Bình (phía sau tòa nhà B6)">
   <div class="ctmia-report-main">
-<h4><span class="ctmia-lang-badge ctmia-lang-vn">VN</span>Ảnh hưởng của biến đổi khí hậu và cảnh báo thiên tai khu vực Nam Bộ</h4>
-    <p class="ctmia-speaker"><u>L. Đ. Quyết</u></p>
+<h4><span class="ctmia-lang-badge ctmia-lang-vn">VN</span>Geometry-Informed Reconstruction of Pothole Surfaces via a Depth Function and Monotonic Neural Networks</h4>
+    <p class="ctmia-speaker">N. H. Hai, P. T. An, P. T. Huu, P. D. Khoa, T. V. Hoai, and <u>T. T. Nghia</u></p>
 </div>
 </article></div>
   <div class="ctmia-parallel-cell">
@@ -1473,76 +1511,7 @@ https://forms.gle/vKxmmPkDMBsHMNjB7
     </div>
   </div>
 
-  <div id="ctmia-program-no-results" class="ctmia-no-results">Không tìm thấy báo cáo phù hợp.</div>
 </div>
-
-<script>
-(function () {
-  const root = document.querySelector('#chuong-trinh .ctmia-program');
-  if (!root) return;
-
-  const buttons = Array.from(root.querySelectorAll('.ctmia-session-btn'));
-  const groups = Array.from(root.querySelectorAll('.ctmia-session-group'));
-  const days = Array.from(root.querySelectorAll('.ctmia-day'));
-  const reports = Array.from(root.querySelectorAll('.ctmia-report-card'));
-  const parallelRows = Array.from(root.querySelectorAll('[data-parallel-row]'));
-  const search = document.getElementById('ctmia-program-search');
-  const noResults = document.getElementById('ctmia-program-no-results');
-  let selectedSession = 'all';
-
-  function normalize(s) {
-    return (s || '').toLocaleLowerCase('vi')
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  }
-
-  function applyFilters() {
-    const q = normalize(search ? search.value.trim() : '');
-
-    groups.forEach(group => {
-      const sessionMatch = selectedSession === 'all' || group.dataset.session === selectedSession;
-      group.classList.toggle('ctmia-hidden', !sessionMatch);
-    });
-
-    reports.forEach(card => {
-      const group = card.closest('.ctmia-session-group');
-      const sessionMatch = !group || selectedSession === 'all' || group.dataset.session === selectedSession;
-      const textMatch = !q || normalize(card.dataset.search || card.innerText).includes(q);
-      card.classList.toggle('ctmia-hidden', !(sessionMatch && textMatch));
-    });
-
-    parallelRows.forEach(row => {
-      const cards = Array.from(row.querySelectorAll('.ctmia-report-card'));
-      if (!cards.length) return;
-      const anyVisible = cards.some(card => !card.classList.contains('ctmia-hidden'));
-      row.classList.toggle('ctmia-hidden', !anyVisible);
-    });
-
-    days.forEach(day => {
-      const visibleGroup = Array.from(day.querySelectorAll('.ctmia-session-group'))
-        .some(group => !group.classList.contains('ctmia-hidden'));
-      day.classList.toggle('ctmia-hidden', !visibleGroup);
-    });
-
-    const visibleReports = reports.filter(card => !card.classList.contains('ctmia-hidden')).length;
-    if (noResults) noResults.style.display = (q && visibleReports === 0) ? 'block' : 'none';
-  }
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', function () {
-      selectedSession = this.dataset.sessionFilter || 'all';
-      buttons.forEach(b => {
-        const active = b === this;
-        b.classList.toggle('is-active', active);
-        b.setAttribute('aria-pressed', active ? 'true' : 'false');
-      });
-      applyFilters();
-    });
-  });
-
-  if (search) search.addEventListener('input', applyFilters);
-  applyFilters();
-})();
-</script>
 </section>
 
 
